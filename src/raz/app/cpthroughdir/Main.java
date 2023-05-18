@@ -51,6 +51,7 @@ public class Main extends javax.swing.JFrame {
         txtTarget = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        txtLoading = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtLog = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
@@ -122,13 +123,14 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jButton1))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtTarget)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTarget))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -153,8 +155,12 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(txtTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(txtLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         txtLog.setColumns(20);
@@ -255,10 +261,13 @@ public class Main extends javax.swing.JFrame {
             for (File file : tmpList) {
                 txtLog.setText(txtLog.getText() + "\r\n" + file.getPath());
                 
+                txtLoading.setText("Sedang Meloading");
                 new Thread(() -> {
                     try {
                         FileUtils.copyDirectory(file, new File(target, file.getName()));
                     } catch (Exception ex) {}
+                    
+                    txtLoading.setText("Sudah selesai melakukan copy data");
                 }).start();
             }
         } catch (Exception ex) {
@@ -322,6 +331,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JFileChooser openFolderChooser;
     private javax.swing.JFileChooser saveFolderChooser;
     private javax.swing.JTextField txtFolder;
+    private javax.swing.JLabel txtLoading;
     private javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtTarget;
     private javax.swing.JTextField txtWildcard;
